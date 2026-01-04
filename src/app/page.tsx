@@ -1,7 +1,14 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+import { getLocaleFromCookies } from '#i18n/server'
+import Image from 'next/image'
+import { LanguageSwitcher } from '@/components/LanguageSwitcher'
+import { CommonDemo } from './common-demo'
+import { ClientDemo } from './demo'
+import styles from './page.module.css'
+import { ServerDemo } from './server-demo'
 
-export default function Home() {
+export default async function Home() {
+  const locale = await getLocaleFromCookies()
+
   return (
     <div className={styles.page}>
       <main className={styles.main}>
@@ -14,53 +21,21 @@ export default function Home() {
           priority
         />
         <div className={styles.intro}>
-          <h1>To get started, edit the page.tsx file.</h1>
+          <h1>react-i18next + Next.js RSC Demo</h1>
+          <LanguageSwitcher currentLocale={locale} />
+          <ServerDemo />
+          <ClientDemo />
+          <CommonDemo />
           <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
+            Both components use the same
+            {' '}
+            <code>useTranslation</code>
+            {' '}
+            API, but
+            they load different implementations based on the environment!
           </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
         </div>
       </main>
     </div>
-  );
+  )
 }

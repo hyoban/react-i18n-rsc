@@ -1,0 +1,7 @@
+{
+  "Welcome to React": "欢迎使用 React 和 Next.js 国际化",
+  "Server Component": "服务端组件",
+  "Client Component": "客户端组件",
+  "Language": "语言",
+  "switch_language": "切换语言"
+}
