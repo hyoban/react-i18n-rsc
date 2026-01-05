@@ -51,19 +51,13 @@ export default async function RootLayout({
   const resources = await getResources(locale)
 
   return (
-    <html lang={locale}>
-      <head>
-        <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <title>Waku i18n Demo</title>
-        <style dangerouslySetInnerHTML={{ __html: globalStyles }} />
-      </head>
-      <body>
-        <I18nProvider locale={locale} resources={resources}>
-          {children}
-        </I18nProvider>
-      </body>
-    </html>
+    <>
+      <title>Waku i18n Demo</title>
+      <style dangerouslySetInnerHTML={{ __html: globalStyles }} />
+      <I18nProvider locale={locale} resources={resources}>
+        {children}
+      </I18nProvider>
+    </>
   )
 }
 
