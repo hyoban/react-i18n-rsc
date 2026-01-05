@@ -19,6 +19,12 @@
     "prepare": "simple-git-hooks",
     "start": "waku start"
   },
+  "simple-git-hooks": {
+    "pre-commit": "npx lint-staged"
+  },
+  "lint-staged": {
+    "*": "eslint --fix"
+  },
   "dependencies": {
     "cookie-es": "^2.0.0",
     "hono": "^4.11.3",
