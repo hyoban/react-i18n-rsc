@@ -1,4 +1,4 @@
-import type { i18n, Resource, ResourceLanguage, TFunction } from 'i18next'
+import type { Resource, ResourceLanguage } from 'i18next'
 import { createInstance } from 'i18next'
 import { cache } from 'react'
 import { initReactI18next } from 'react-i18next/initReactI18next'
@@ -39,7 +39,8 @@ export const getResources = cache(async (lng: Locale, ns?: Namespace[]): Promise
   return { [lng]: messages }
 })
 
-async function createServerI18nInstance(lng: Locale, resources: Resource): Promise<i18n> {
+const getI18nextInstance = cache(async (lng: Locale) => {
+  const resources = await getResources(lng)
   const instance = createInstance()
 
   await instance
@@ -50,23 +51,7 @@ async function createServerI18nInstance(lng: Locale, resources: Resource): Promi
     })
 
   return instance
-}
-
-const getI18nextInstance = cache(async (lng: Locale) => {
-  const messages = await getResources(lng)
-  return createServerI18nInstance(lng, messages)
 })
-
-export async function getTranslation(
-  lng: Locale,
-  ns: Namespace | Namespace[] = defaultNS,
-): Promise<{ t: TFunction, i18n: i18n }> {
-  const i18nInstance = await getI18nextInstance(lng)
-  return {
-    t: i18nInstance.getFixedT(lng, Array.isArray(ns) ? ns[0] : ns),
-    i18n: i18nInstance,
-  }
-}
 
 export const getI18nConfig = cache(async (lng: Locale, ns: Namespace | Namespace[] = defaultNS) => {
   const i18nInstance = await getI18nextInstance(lng)
