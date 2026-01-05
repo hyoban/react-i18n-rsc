@@ -2,6 +2,12 @@
 
 This tutorial walks you through setting up [react-i18next](https://react.i18next.com/) for React Server Components (RSC), providing a unified API for both Server and Client Components.
 
+This architecture is heavily inspired by [next-intl](https://github.com/amannn/next-intl), particularly:
+
+- Using `react-server` conditional exports to distinguish Server/Client Components
+- Server-side resource loading to avoid client-side flash
+- Request-scoped caching with React's `cache()` function
+
 ## Key Features
 
 - Unified `useTranslation` API for Server and Client Components
@@ -352,14 +358,6 @@ export function ClientDemo() {
 ```
 
 Note: Both components use the exact same API!
-
-## Acknowledgments
-
-This architecture is heavily inspired by [next-intl](https://github.com/amannn/next-intl), particularly:
-
-- Using `react-server` conditional exports to distinguish Server/Client Components
-- Server-side resource loading to avoid client-side flash
-- Request-scoped caching with React's `cache()` function
 
 ## License
 
