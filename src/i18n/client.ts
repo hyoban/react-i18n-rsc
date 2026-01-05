@@ -28,6 +28,8 @@ export function createClientI18nInstanceSync(
     .use(getBackend())
     .init({
       ...getInitOptions(lng),
+      // When resources are provided, we can call init synchronously
+      // https://github.com/i18next/i18next/blob/5f44eb70189ff7b1a7ff289bd4b642bdc170c152/src/i18next.js#L225-L229
       resources,
       partialBundledLanguages: true,
     })
