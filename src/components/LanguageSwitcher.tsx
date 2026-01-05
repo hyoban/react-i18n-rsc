@@ -9,19 +9,15 @@ const localeNames: Record<Locale, string> = {
   zh: '中文',
 }
 
-interface LanguageSwitcherProps {
-  currentLocale: Locale
-}
-
-export function LanguageSwitcher({ currentLocale }: LanguageSwitcherProps) {
-  const { t } = useTranslation()
+export function LanguageSwitcher() {
+  const { t, i18n } = useTranslation()
 
   const handleLocaleChange = (newLocale: Locale) => {
-    // Set cookie
     document.cookie = `${LOCALE_COOKIE}=${newLocale}; path=/; max-age=${60 * 60 * 24 * 365}`
-    // Refresh the page to apply new locale
-    globalThis.location.reload()
+    i18n.changeLanguage(newLocale)
   }
+
+  const currentLocale = i18n.language as Locale
 
   return (
     <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>

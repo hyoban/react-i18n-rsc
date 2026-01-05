@@ -1,5 +1,4 @@
 import type { CSSProperties } from 'react'
-import { getLocaleFromCookies } from '#i18n/server'
 import { CommonDemo } from '../components/common-demo'
 import { ClientDemo } from '../components/demo'
 import { LanguageSwitcher } from '../components/LanguageSwitcher'
@@ -51,14 +50,12 @@ const pStyle: CSSProperties = {
 }
 
 export default async function Home() {
-  const locale = await getLocaleFromCookies()
-
   return (
     <div style={pageStyle}>
       <main style={mainStyle}>
         <div style={introStyle}>
           <h1 style={h1Style}>react-i18next + Waku RSC Demo</h1>
-          <LanguageSwitcher currentLocale={locale} />
+          <LanguageSwitcher />
           <ServerDemo />
           <ClientDemo />
           <CommonDemo />

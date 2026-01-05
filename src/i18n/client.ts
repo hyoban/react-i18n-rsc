@@ -26,11 +26,14 @@ export function createClientI18nInstanceSync(
     [lng]: messages,
   }
 
-  instance.use(initReactI18next).init({
-    ...getInitOptions(lng),
-    resources,
-    partialBundledLanguages: true,
-  })
+  instance
+    .use(initReactI18next)
+    .use(getBackend())
+    .init({
+      ...getInitOptions(lng),
+      resources,
+      partialBundledLanguages: true,
+    })
 
   return instance
 }
