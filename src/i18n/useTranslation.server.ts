@@ -1,6 +1,7 @@
-import type { Namespace } from './settings'
 import { use } from 'react'
+
 import { getI18nConfig, getRequestLocale } from './server'
+import type { Namespace } from './settings'
 import { defaultNS } from './settings'
 
 export function useTranslation(ns: Namespace | Namespace[] = defaultNS) {

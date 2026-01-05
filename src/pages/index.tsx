@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react'
+
 import { CommonDemo } from '../components/common-demo'
 import { ClientDemo } from '../components/demo'
 import { LanguageSwitcher } from '../components/LanguageSwitcher'

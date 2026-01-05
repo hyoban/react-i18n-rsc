@@ -1,10 +1,11 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import type { Locale, Messages } from './settings'
 import { useEffect, useMemo, useRef, useSyncExternalStore } from 'react'
 import { I18nextProvider } from 'react-i18next'
+
 import { createClientI18nInstanceAsync, createClientI18nInstanceSync } from './client'
+import type { Locale, Messages } from './settings'
 import { fallbackLng } from './settings'
 
 interface I18nProviderProps {

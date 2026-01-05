@@ -1,9 +1,10 @@
 import type { i18n, TFunction } from 'i18next'
-import type { Locale, Messages, Namespace } from './settings'
 import { createInstance } from 'i18next'
 import { cache } from 'react'
 import { initReactI18next } from 'react-i18next/initReactI18next'
 import { unstable_getContextData as getContextData } from 'waku/server'
+
+import type { Locale, Messages, Namespace } from './settings'
 import { defaultNS, fallbackLng, getInitOptions, namespaces } from './settings'
 
 // Request-level locale cache

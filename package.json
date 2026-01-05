@@ -1,8 +1,8 @@
 {
   "name": "react-i18n-rsc",
-  "type": "module",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "imports": {
     "#i18n/useTranslation": {
       "react-server": "./src/i18n/useTranslation.server.ts",
@@ -12,11 +12,12 @@
     "#i18n/server": "./src/i18n/server.ts"
   },
   "scripts": {
-    "dev": "waku dev",
     "build": "waku build",
-    "start": "waku start",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "dev": "waku dev",
+    "lint": "eslint",
+    "lint:fix": "eslint --fix",
+    "prepare": "simple-git-hooks",
+    "start": "waku start"
   },
   "dependencies": {
     "cookie-es": "^2.0.0",
@@ -29,14 +30,13 @@
     "waku": "1.0.0-alpha.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^6.7.3",
-    "@eslint-react/eslint-plugin": "^2.5.1",
     "@types/node": "^25.0.3",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "eslint": "^9.39.2",
-    "eslint-plugin-react-hooks": "^7.0.1",
-    "eslint-plugin-react-refresh": "^0.4.26",
+    "eslint-config-hyoban": "^5.0.2",
+    "lint-staged": "^16.2.7",
+    "simple-git-hooks": "^2.13.1",
     "typescript": "^5.9.3"
   }
 }

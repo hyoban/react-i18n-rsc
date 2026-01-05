@@ -1,7 +1,8 @@
-import type { MiddlewareHandler } from 'hono'
-import type { Locale } from '../i18n/settings'
 import { parse } from 'cookie-es'
+import type { MiddlewareHandler } from 'hono'
 import { unstable_getContextData as getContextData } from 'waku/server'
+
+import type { Locale } from '../i18n/settings'
 import { fallbackLng, languages, LOCALE_COOKIE } from '../i18n/settings'
 
 function localeMiddleware(): MiddlewareHandler {

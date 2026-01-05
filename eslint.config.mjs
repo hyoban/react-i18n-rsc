@@ -1,7 +1,6 @@
-import antfu from '@antfu/eslint-config'
+// @ts-check
+import { defineConfig } from 'eslint-config-hyoban'
 
-export default antfu({
-  react: true,
-  pnpm: false,
+export default defineConfig({
   ignores: ['src/pages.gen.ts'],
 })

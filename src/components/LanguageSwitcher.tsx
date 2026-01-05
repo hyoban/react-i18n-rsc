@@ -1,10 +1,11 @@
 'use client'
 
+import { useTransition } from 'react'
+import { useRouter } from 'waku'
+
 import type { Locale } from '#i18n/settings'
 import { languages, LOCALE_COOKIE } from '#i18n/settings'
 import { useTranslation } from '#i18n/useTranslation'
-import { useTransition } from 'react'
-import { useRouter } from 'waku'
 
 const localeNames: Record<Locale, string> = {
   en: 'English',
@@ -17,6 +18,7 @@ export function LanguageSwitcher() {
   const [isPending, startTransition] = useTransition()
 
   const handleLocaleChange = (newLocale: Locale) => {
+    // eslint-disable-next-line unicorn/no-document-cookie
     document.cookie = `${LOCALE_COOKIE}=${newLocale}; path=/; max-age=${60 * 60 * 24 * 365}`
     startTransition(async () => {
       await i18n.changeLanguage(newLocale)

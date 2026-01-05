@@ -1,5 +1,7 @@
 import type { ReactNode } from 'react'
+
 import { getLocaleFromCookies, getMessages, setRequestLocale } from '#i18n/server'
+
 import { I18nProvider } from '../i18n/I18nProvider'
 
 const globalStyles = `
