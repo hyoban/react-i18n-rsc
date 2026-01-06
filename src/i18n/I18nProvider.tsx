@@ -1,6 +1,6 @@
 'use client'
 
-import type { i18n, Resource } from 'i18next'
+import type { Resource } from 'i18next'
 import type { ReactNode } from 'react'
 import { I18nextProvider } from 'react-i18next'
 
@@ -14,16 +14,12 @@ interface I18nProviderProps {
   fallback?: ReactNode
 }
 
-let cachedI18nInstance: i18n | null = null
-
 export function I18nProvider({
   children,
   locale,
   resources,
 }: I18nProviderProps) {
-  if (!cachedI18nInstance || cachedI18nInstance.language !== locale) {
-    cachedI18nInstance = createClientI18nInstanceSync(locale, resources)
-  }
-
-  return <I18nextProvider i18n={cachedI18nInstance}>{children}</I18nextProvider>
+  console.info('Creating i18n instance in client for', locale)
+  const i18n = createClientI18nInstanceSync(locale, resources)
+  return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
 }

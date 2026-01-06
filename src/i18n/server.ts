@@ -25,6 +25,8 @@ export const getResources = cache(async (lng: Locale, ns?: Namespace[]): Promise
     }),
   )
 
+  console.info('Loaded resources for', lng, ns ?? namespaces, 'in server')
+
   return { [lng]: messages }
 })
 

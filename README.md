@@ -202,18 +202,13 @@ interface I18nProviderProps {
   resources: Resource
 }
 
-let cachedI18nInstance: i18n | null = null
-
 export function I18nProvider({
   children,
   locale,
   resources,
 }: I18nProviderProps) {
-  if (!cachedI18nInstance || cachedI18nInstance.language !== locale) {
-    cachedI18nInstance = createClientI18nInstanceSync(locale, resources)
-  }
-
-  return <I18nextProvider i18n={cachedI18nInstance}>{children}</I18nextProvider>
+  const i18n = createClientI18nInstanceSync(locale, resources)
+  return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
 }
 ```
 
