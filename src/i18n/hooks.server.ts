@@ -4,7 +4,7 @@ import { getI18nConfig, getRequestLocale } from './server'
 import type { Locale, Namespace } from './settings'
 import { defaultNS } from './settings'
 
-export function useTranslation(ns: Namespace | Namespace[] = defaultNS) {
+export function useTranslation(ns: Namespace = defaultNS) {
   const lng = getRequestLocale()
   const config = use(getI18nConfig(lng, ns))
 

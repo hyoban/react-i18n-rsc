@@ -42,11 +42,11 @@ const getI18nextInstance = cache(async (lng: Locale) => {
   return instance
 })
 
-export const getI18nConfig = cache(async (lng: Locale, ns: Namespace | Namespace[] = defaultNS) => {
+export const getI18nConfig = cache(async (lng: Locale, ns: Namespace = defaultNS) => {
   const i18nInstance = await getI18nextInstance(lng)
   return {
     i18n: i18nInstance,
-    t: i18nInstance.getFixedT(lng, Array.isArray(ns) ? ns[0] : ns),
+    t: i18nInstance.getFixedT(lng, ns),
     lng,
     ns,
   }
