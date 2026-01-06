@@ -86,20 +86,20 @@ import { initReactI18next } from 'react-i18next/initReactI18next'
 
 import { serverOnlyContext } from './server-only-context'
 import type { Locale, Namespace } from './settings'
-import { defaultNS, fallbackLng, getInitOptions, namespaces } from './settings'
+import { fallbackLng, getInitOptions, namespaces } from './settings'
 
-export const [getRequestLocale, setRequestLocale] = serverOnlyContext<Locale>(fallbackLng)
+export const [getLocale, setLocale] = serverOnlyContext<Locale>(fallbackLng)
 
 export async function getLocaleFromCookies(): Promise<Locale> {
   // Implement locale retrieval based on your framework
   return fallbackLng
 }
 
-export const getResources = cache(async (lng: Locale, ns?: Namespace[]): Promise<Resource> => {
+export const getResources = cache(async (lng: Locale): Promise<Resource> => {
   const messages = {} as ResourceLanguage
 
   await Promise.all(
-    (ns ?? namespaces).map(async (ns) => {
+    namespaces.map(async (ns) => {
       const module = await import(`../locales/${lng}/${ns}.json`)
       messages[ns] = module.default
     }),
@@ -108,7 +108,7 @@ export const getResources = cache(async (lng: Locale, ns?: Namespace[]): Promise
   return { [lng]: messages }
 })
 
-const getI18nextInstance = cache(async (lng: Locale) => {
+const getI18n = cache(async (lng: Locale) => {
   const resources = await getResources(lng)
   const instance = createInstance()
 
@@ -122,20 +122,18 @@ const getI18nextInstance = cache(async (lng: Locale) => {
   return instance
 })
 
-export const getI18nConfig = cache(async (lng: Locale, ns: Namespace = defaultNS) => {
-  const i18nInstance = await getI18nextInstance(lng)
+export const getTranslation = cache(async (lng: Locale, ns?: Namespace) => {
+  const i18n = await getI18n(lng)
   return {
-    i18n: i18nInstance,
-    t: i18nInstance.getFixedT(lng, ns),
-    lng,
-    ns,
+    i18n,
+    t: i18n.getFixedT(lng, ns),
   }
 })
 ```
 
 Key points:
 - `serverOnlyContext` creates request-scoped state using React's `cache()`
-- `setRequestLocale` and `getRequestLocale` share locale within request lifecycle
+- `setLocale` and `getLocale` share locale within request lifecycle
 
 ## Step 4: Create Client-Side Utilities
 
@@ -161,7 +159,7 @@ function getBackend() {
   }
 }
 
-export function createClientI18nInstanceSync(
+export function createI18nInstance(
   lng: Locale,
   resources: Resource,
 ): i18n {
@@ -193,7 +191,7 @@ import type { i18n, Resource } from 'i18next'
 import type { ReactNode } from 'react'
 import { I18nextProvider } from 'react-i18next'
 
-import { createClientI18nInstanceSync } from './client'
+import { createI18nInstance } from './client'
 import type { Locale } from './settings'
 
 interface I18nProviderProps {
@@ -207,7 +205,7 @@ export function I18nProvider({
   locale,
   resources,
 }: I18nProviderProps) {
-  const i18n = createClientI18nInstanceSync(locale, resources)
+  const i18n = createI18nInstance(locale, resources)
   return <I18nextProvider i18n={i18n}>{children}</I18nextProvider>
 }
 ```
@@ -219,22 +217,16 @@ export function I18nProvider({
 ```ts
 import { use } from 'react'
 
-import { getI18nConfig, getRequestLocale } from './server'
+import { getTranslation, getLocale } from './server'
 import type { Locale, Namespace } from './settings'
-import { defaultNS } from './settings'
 
-export function useTranslation(ns: Namespace = defaultNS) {
-  const lng = getRequestLocale()
-  const config = use(getI18nConfig(lng, ns))
-
-  return {
-    t: config.t,
-    i18n: config.i18n,
-  }
+export function useTranslation(ns?: Namespace) {
+  const lng = getLocale()
+  return use(getTranslation(lng, ns))
 }
 
 export function useLocale(): Locale {
-  return getRequestLocale()
+  return getLocale()
 }
 ```
 
@@ -284,7 +276,7 @@ This is the core mechanism:
 ```tsx
 import type { ReactNode } from 'react'
 
-import { getLocaleFromCookies, getResources, setRequestLocale } from '#i18n/server'
+import { getLocaleFromCookies, getResources, setLocale } from '#i18n/server'
 import { I18nProvider } from '../i18n/I18nProvider'
 
 export default async function RootLayout({
@@ -293,7 +285,7 @@ export default async function RootLayout({
   children: ReactNode
 }) {
   const locale = await getLocaleFromCookies()
-  setRequestLocale(locale)
+  setLocale(locale)
 
   const resources = await getResources(locale)
 

@@ -17,7 +17,7 @@ function getBackend() {
   }
 }
 
-export function createClientI18nInstanceSync(
+export function createI18nInstance(
   lng: Locale,
   resources: Resource,
 ): i18n {

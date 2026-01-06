@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-import { getLocaleFromCookies, getResources, setRequestLocale } from '#i18n/server'
+import { getLocaleFromCookies, getResources, setLocale } from '#i18n/server'
 
 import { I18nProvider } from '../i18n/I18nProvider'
 
@@ -37,7 +37,7 @@ export default async function RootLayout({
   children: ReactNode
 }) {
   const locale = await getLocaleFromCookies()
-  setRequestLocale(locale)
+  setLocale(locale)
 
   const resources = await getResources(locale)
 

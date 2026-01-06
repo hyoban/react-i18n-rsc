@@ -6,31 +6,31 @@ import { unstable_getContextData as getContextData } from 'waku/server'
 
 import { serverOnlyContext } from './server-only-context'
 import type { Locale, Namespace } from './settings'
-import { defaultNS, fallbackLng, getInitOptions, namespaces } from './settings'
+import { fallbackLng, getInitOptions, namespaces } from './settings'
 
-export const [getRequestLocale, setRequestLocale] = serverOnlyContext<Locale>(fallbackLng)
+export const [getLocale, setLocale] = serverOnlyContext<Locale>(fallbackLng)
 
 export async function getLocaleFromCookies(): Promise<Locale> {
   const data = getContextData() as { locale?: Locale }
   return data.locale ?? fallbackLng
 }
 
-export const getResources = cache(async (lng: Locale, ns?: Namespace[]): Promise<Resource> => {
+export const getResources = cache(async (lng: Locale): Promise<Resource> => {
   const messages = {} as ResourceLanguage
 
   await Promise.all(
-    (ns ?? namespaces).map(async (ns) => {
+    namespaces.map(async (ns) => {
       const module = await import(`../locales/${lng}/${ns}.json`)
       messages[ns] = module.default
     }),
   )
 
-  console.info('Loaded resources for', lng, ns ?? namespaces, 'in server')
+  console.info('Loaded resources for', lng, namespaces, 'in server')
 
   return { [lng]: messages }
 })
 
-const getI18nextInstance = cache(async (lng: Locale) => {
+const getI18n = cache(async (lng: Locale) => {
   const resources = await getResources(lng)
   const instance = createInstance()
 
@@ -44,12 +44,10 @@ const getI18nextInstance = cache(async (lng: Locale) => {
   return instance
 })
 
-export const getI18nConfig = cache(async (lng: Locale, ns: Namespace = defaultNS) => {
-  const i18nInstance = await getI18nextInstance(lng)
+export const getTranslation = cache(async (lng: Locale, ns?: Namespace) => {
+  const i18n = await getI18n(lng)
   return {
-    i18n: i18nInstance,
-    t: i18nInstance.getFixedT(lng, ns),
-    lng,
-    ns,
+    i18n,
+    t: i18n.getFixedT(lng, ns),
   }
 })
